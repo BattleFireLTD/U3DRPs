@@ -24,6 +24,21 @@ public class RP1 : RenderPipeline
                 context.ExecuteCommandBuffer(commandbuffer);
                 commandbuffer.Clear();
             }
+            context.SetupCameraProperties(camera);
+            ShaderTagId rp1ShaderTagID = new ShaderTagId("RP1Shader");
+
+            var sortingSettings = new SortingSettings(camera)
+            {
+                criteria = SortingCriteria.CommonOpaque
+            };
+            var drawingSettings = new DrawingSettings(rp1ShaderTagID, sortingSettings);
+            var filteringSettings = new FilteringSettings(RenderQueueRange.opaque);
+            CullingResults cullingResults;
+            if (camera.TryGetCullingParameters(out ScriptableCullingParameters p))
+            {
+                cullingResults = context.Cull(ref p);
+                context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings);
+            }
             context.Submit();
         }
     }
