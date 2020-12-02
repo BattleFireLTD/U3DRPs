@@ -25,6 +25,10 @@ public class RP1 : RenderPipeline
                 commandbuffer.Clear();
             }
             context.SetupCameraProperties(camera);
+            Vector4 mainLightPosition = new Vector4(1.0f,1.0f,0.0f,0.0f);
+            Vector4 mainLightColor = new Vector4(1.0f,1.0f,1.0f,1.0f);
+            commandbuffer.SetGlobalVector(Shader.PropertyToID("MainLightPosition"), mainLightPosition);
+            commandbuffer.SetGlobalVector(Shader.PropertyToID("MainLightColor"), mainLightColor);
             ShaderTagId rp1ShaderTagID = new ShaderTagId("RP1Shader");
 
             var sortingSettings = new SortingSettings(camera)
